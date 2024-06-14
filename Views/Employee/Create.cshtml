@@ -1,0 +1,101 @@
+﻿ @model EmployeeRequest
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <title>Employee Details</title>
+    <style>
+        body {
+            background-image: linear-gradient(rgba(0,0,0,0.4), rgba(0, 0, 0, 0.4)), url('https://toplinemanagement.com/wp-content/uploads/2017/01/top-line-management-login-background-1.jpg');
+            background-size: cover;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .login {
+            width: 400px;
+            height: 500px;
+            overflow: hidden;
+            border-radius: 5px;
+            display: block;
+            margin-right: 20%;
+            margin-top: 5%;
+        }
+
+        .text-danger {
+            color: red;
+        }
+
+        .text-white {
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="login">
+        <h2 class="text-center text-light mb-4">Employee Details Form</h2>
+        @using (Html.BeginForm("Create", "Employee", FormMethod.Post, new { @id = "employeeForm" }))
+        {
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="basic-addon1"><i class="fa-solid fa-user"></i></span>
+                @Html.TextBoxFor(m => m.Name, new { @class = "form-control", @id = "name" })
+                @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-white" })
+            </div>
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="basic-addon1"><i class="fa-solid fa-user"></i></span>
+                @Html.TextBoxFor(m => m.Id, new { @class = "form-control", placeholder = "ID", @id = "id" })
+            </div>
+            @Html.ValidationMessageFor(m => m.Id, "", new { @class = "text-white" }) <!-- Move this outside the input group -->
+            <div class="form-group">
+                @Html.TextAreaFor(m => m.Description, new { @class = "form-control", placeholder = "Description", @id = "description" })
+                @Html.ValidationMessageFor(m => m.Description, "", new { @class = "text-white" })
+            </div>
+            <button type="submit" class="btn btn-primary mt-3" onclick="return validateForm()">Submit</button>
+            <a href="@Url.Action("Index", "Employee")" class="btn btn-secondary mt-3">View</a>
+        }
+    </div>
+
+    <script>
+        function validateForm() {
+            var isValid = true;
+
+            // Clear previous errors
+            document.getElementById("nameError").innerHTML = "";
+            document.getElementById("idError").innerHTML = "";
+            document.getElementById("descriptionError").innerHTML = "";
+
+            // Get form values
+            var name = document.getElementById("name").value;
+            var id = document.getElementById("id").value;
+            var description = document.getElementById("description").value;
+
+            // Validate Name
+            if (name === "") {
+                document.getElementById("nameError").innerHTML = "Please enter your name";
+                isValid = false;
+            }
+
+            // Validate ID
+            if (id === "" || isNaN(id) || id <= 0) {
+                document.getElementById("idError").innerHTML = "Please enter a positive number";
+                isValid = false;
+            }
+
+            // Validate Description
+            if (description === "") {
+                document.getElementById("descriptionError").innerHTML = "Please enter your Description";
+                isValid = false;
+            }
+
+            return isValid;
+        }
+    </script>
+</body>
+</html>
+
